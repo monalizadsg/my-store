@@ -1,8 +1,11 @@
-import React from 'react';
+import React from "react";
+import AppRouter from "./app/AppRouter";
 
 function App() {
   return (
-   <h1>Welcome to my store</h1>
+    <React.Fragment>
+      <AppRouter />
+    </React.Fragment>
   );
 }
 
