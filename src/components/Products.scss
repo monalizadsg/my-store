@@ -1,0 +1,18 @@
+.products-wrapper {
+  // border: solid 1px green;
+  text-align: center;
+  margin-top: 30px;
+
+  .card-container {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+
+    .card {
+      // border: solid 1px red;
+      min-width: 345px;
+      margin: 20px;
+    }
+  }
+}
