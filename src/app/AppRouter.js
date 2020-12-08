@@ -5,6 +5,8 @@ import PublicRoute from "./PublicRoute";
 import Home from "./../components/Home";
 import Products from "./../components/Products";
 import AddProduct from "./../components/AddProduct";
+import Login from "./../components/Login";
+import Signup from "./../components/Signup";
 
 const AppRouter = () => {
   return (
@@ -12,8 +14,8 @@ const AppRouter = () => {
       <PublicRoute exact component={Home} path='/' />
       <PrivateRoute component={Products} path='/products' />
       <PublicRoute component={AddProduct} path='/add-product' />
-      {/* <PublicRoute exact component={Login} path='/login' />
-      <PublicRoute exact component={Signup} path='/signup' /> */}
+      <PublicRoute component={Login} path='/login' />
+      <PublicRoute component={Signup} path='/signup' />
     </Switch>
   );
 };
