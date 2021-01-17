@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   Container,
@@ -8,9 +8,13 @@ import {
   Typography,
   ListItem,
   ListItemText,
+  Button,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
+import { auth } from "../config/Config";
+import { UserContext } from "./../global/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   navbarDisplayFlex: {
@@ -40,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const navLinks = [
-  { title: "products", path: "/products" },
   { title: "sign up", path: "/signup" },
   { title: "login", path: "/login" },
   { title: "my cart", path: "/my-cart", icon: <ShoppingCartIcon /> },
@@ -48,12 +51,14 @@ const navLinks = [
 
 const Header = () => {
   const classes = useStyles();
-  // const history = useHistory();
+  const { user } = useContext(UserContext);
+  const history = useHistory();
 
-  // const handleLogout = () => {
-  //   logout();
-  //   history.push("/login");
-  // };
+  const handleLogout = () => {
+    auth.signOut().then(() => {
+      history.push("/");
+    });
+  };
 
   return (
     <div>
@@ -65,20 +70,39 @@ const Header = () => {
                 MyStore
               </Link>
             </Typography>
-            <List
-              component='nav'
-              aria-labelledby='main navigation'
-              className={classes.navDisplayFlex}
-            >
-              {navLinks.map(({ title, path, icon }) => (
-                <Link to={path} key={title} className={classes.linkText}>
-                  <ListItem button>
-                    <ListItemText primary={title} />
-                    {icon && icon}
+            {!user && (
+              <List
+                component='nav'
+                aria-labelledby='main navigation'
+                className={classes.navDisplayFlex}
+              >
+                {navLinks.map(({ title, path, icon }) => (
+                  <Link to={path} key={title} className={classes.linkText}>
+                    <ListItem button>
+                      <ListItemText primary={title} />
+                      {icon && icon}
+                    </ListItem>
+                  </Link>
+                ))}
+              </List>
+            )}
+            {user && (
+              <List className={classes.navDisplayFlex}>
+                <Link to='/' className={classes.linkText}>
+                  <ListItem>{user}</ListItem>
+                </Link>
+                <Link to='/my-cart' className={classes.linkText}>
+                  <ListItem>
+                    <ShoppingCartIcon />
                   </ListItem>
                 </Link>
-              ))}
-            </List>
+                <span>
+                  <Button onClick={handleLogout} variant='contained'>
+                    LOGOUT
+                  </Button>
+                </span>
+              </List>
+            )}
           </Container>
         </Toolbar>
       </AppBar>
