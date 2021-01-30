@@ -62,6 +62,8 @@ const Signup = (props) => {
         db.collection("SignedUpUsersData")
           .doc(cred.user.uid)
           .set({
+            FirstName: firstName,
+            LastName: lastName,
             Name: `${firstName} ${lastName}`,
             Email: email,
             Password: password,
@@ -118,7 +120,7 @@ const Signup = (props) => {
       <Container className={classes.container} maxWidth='xs'>
         <Grid item xs={12}>
           <Typography variant='h5'>Create your account</Typography>
-          <Typography variant='p'>
+          <Typography variant='body1'>
             Already have an account? Login
             <Link to='/login' className={classes.linkTextDisplay}>
               {" "}

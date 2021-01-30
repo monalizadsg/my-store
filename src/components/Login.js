@@ -115,7 +115,7 @@ const Login = () => {
           </Grid>
         </form>
         <Grid item xs={12} style={{ marginTop: 15 }}>
-          <Typography variant='p'>
+          <Typography variant='body1'>
             Don't have an account? Register
             <Link to='/signup' className={classes.linkTextDisplay}>
               {" "}
