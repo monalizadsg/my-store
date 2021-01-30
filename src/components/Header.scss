@@ -1,0 +1,91 @@
+.header {
+  &.MuiAppBar-root {
+    background-color: #b8c1ec;
+  }
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+  }
+
+  .logo {
+    text-decoration: none;
+    color: #232946;
+    font-weight: 500;
+  }
+
+  .navbar-list {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-link {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #232946;
+  }
+
+  .user-name {
+    color: #232946;
+    font-weight: 500;
+  }
+
+  .cart {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 10px 10px;
+  }
+
+  .cart-qty {
+    background: #db7093;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    position: absolute;
+    top: -2px;
+    left: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logout-btn {
+    padding-left: 10;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .header {
+    .nav-container {
+      width: 100%;
+      padding: 10px;
+    }
+    .logo {
+      font-size: 28px;
+    }
+
+    .nav-link {
+      font-size: 10px;
+
+      .MuiListItem-gutters {
+        padding: 0 10px;
+      }
+
+      &:last-child {
+        .MuiListItem-gutters {
+          padding-right: 0;
+        }
+      }
+    }
+
+    .logout-btn {
+      padding: 0;
+    }
+  }
+}

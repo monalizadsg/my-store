@@ -15,8 +15,7 @@ export class UserContextProvider extends React.Component {
           .doc(user.uid)
           .get()
           .then((snapshot) => {
-            console.log(snapshot.data().Name);
-            this.setState({ user: snapshot.data().Name });
+            this.setState({ user: snapshot.data().FirstName });
           });
       } else {
         this.setState({ user: null });
