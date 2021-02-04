@@ -3,6 +3,7 @@
     background-color: #b8c1ec;
   }
   .nav-container {
+    width: 80vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,8 +12,8 @@
 
   .logo {
     text-decoration: none;
-    color: #232946;
-    font-weight: 500;
+    color: #d44273;
+    font-weight: 600;
   }
 
   .navbar-list {
@@ -86,6 +87,18 @@
 
     .logout-btn {
       padding: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .header {
+    .nav-container {
+      .navbar-list {
+        .user-name {
+          display: none;
+        }
+      }
     }
   }
 }

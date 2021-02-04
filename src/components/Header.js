@@ -35,11 +35,11 @@ const Header = () => {
 
   return (
     <div>
-      <AppBar position='static' className='header'>
+      <AppBar position='fixed' className='header'>
         <Container className='nav-container'>
           <Typography variant='h5'>
             <Link to='/' className='logo'>
-              TeeStore
+              TeeShop
             </Link>
           </Typography>
           {!user && (
