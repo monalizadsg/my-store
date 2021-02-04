@@ -30,6 +30,7 @@ const AddProduct = () => {
   };
   const [product, setProduct] = useState(initialProduct);
   const [error, setError] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const types = ["image/png", "image/jpeg"]; // image types
 
@@ -52,6 +53,8 @@ const AddProduct = () => {
     if (!isValid) {
       return;
     }
+
+    setIsLoading(true);
 
     const uploadTask = storage.ref(`product-images/${image.name}`).put(image);
     uploadTask.on(
@@ -84,6 +87,7 @@ const AddProduct = () => {
                 setProduct({ ...product, name: "", price: 0, image: null });
                 imageFileRef.current.value = "";
                 setError("");
+                setIsLoading(false);
               })
               .catch((err) => console.log(err));
           });
@@ -177,8 +181,9 @@ const AddProduct = () => {
                   fullWidth
                   type='submit'
                   variant='contained'
+                  disabled={isLoading}
                 >
-                  Add
+                  {!isLoading ? "Add" : "Adding"}
                 </Button>
               </Grid>
             </Grid>
