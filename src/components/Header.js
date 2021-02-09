@@ -52,7 +52,12 @@ const Header = () => {
                 <Link to={path} key={title} className='nav-link'>
                   <ListItem button>
                     <ListItemText primary={title} />
-                    {icon && icon}
+                    {icon && (
+                      <div className='cart'>
+                        <span>{icon}</span>
+                        <div className='cart-qty'>{totalQty}</div>
+                      </div>
+                    )}
                   </ListItem>
                 </Link>
               ))}
