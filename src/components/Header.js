@@ -8,8 +8,10 @@ import {
   ListItem,
   ListItemText,
   Button,
+  InputBase,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import SearchIcon from "@material-ui/icons/Search";
 import { useHistory } from "react-router-dom";
 import { auth } from "../config/Config";
 import { UserContext } from "./../global/UserContext";
@@ -22,10 +24,10 @@ const navLinks = [
   { title: "cart", path: "/my-cart", icon: <ShoppingCartIcon /> },
 ];
 
-const Header = () => {
+const Header = (props) => {
+  const history = useHistory();
   const { user } = useContext(UserContext);
   const { totalQty } = useContext(CartContext);
-  const history = useHistory();
 
   const handleLogout = () => {
     auth.signOut().then(() => {
@@ -42,6 +44,16 @@ const Header = () => {
               TeeShop
             </Link>
           </Typography>
+          <div className='navbar-search'>
+            <div className='search-icon'>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder='Search…'
+              className='search-input'
+              onChange={(event) => props.onChangeSearchInput(event)}
+            />
+          </div>
           {!user && (
             <List
               component='nav'

@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
-import { ProductsContext } from "./../global/ProductsContext";
+import React, { useContext, useState, useEffect } from "react";
 import { Card, Typography, CardMedia } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { db } from "../config/Config";
 import "./Products.scss";
 import Header from "./Header";
 import { CartContext } from "./../global/CartContext";
 import Loading from "./Loading";
 import { ToastContext } from "../global/ToastContext";
+import _debounce from "lodash/debounce";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,9 +21,38 @@ const useStyles = makeStyles((theme) => ({
 
 const Products = () => {
   const classes = useStyles();
-  const { products } = useContext(ProductsContext);
   const { dispatch, shoppingCart } = useContext(CartContext);
   const { showToast } = useContext(ToastContext);
+  const [searchValue, setSearchValue] = useState("");
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const newProducts = [];
+    db.collection("Products").onSnapshot((snapshot) => {
+      let changes = snapshot.docChanges();
+      changes.forEach((change) => {
+        if (change.type === "added") {
+          newProducts.push({
+            id: change.doc.id,
+            name: change.doc.data().ProductName,
+            price: change.doc.data().ProductPrice,
+            img: change.doc.data().ProductImg,
+          });
+        }
+      });
+      if (searchValue) {
+        const filteredProducts = newProducts.filter((product) => {
+          return product.name.toLowerCase().includes(searchValue.toLowerCase());
+        });
+        setIsLoading(false);
+        setProducts(filteredProducts);
+      } else {
+        setIsLoading(false);
+        setProducts(newProducts);
+      }
+    });
+  }, [searchValue]);
 
   const handleAddToCart = (item) => {
     console.log(shoppingCart);
@@ -40,19 +70,29 @@ const Products = () => {
     }
   };
 
+  const debouncedSetSearchValue = _debounce(
+    (value) => setSearchValue(value),
+    1000
+  );
+
+  const onChangeSearchInput = (event) => {
+    debouncedSetSearchValue(event.target.value);
+  };
+
   return (
     <>
-      <Header />
+      <Header onChangeSearchInput={onChangeSearchInput} />
       <div className='products-wrapper'>
         {products.length !== 0 && (
           <Typography variant='h5'>Products</Typography>
         )}
         <div className='card-container'>
-          {products.length === 0 && (
+          {isLoading && (
             <div className='loading'>
-              <Loading isLoading='true' />
+              <Loading isLoading={isLoading} />
             </div>
           )}
+
           {products.map((product) => (
             <div key={product.name} className='card'>
               <Card className={classes.root}>
@@ -82,6 +122,9 @@ const Products = () => {
               </div>
             </div>
           ))}
+          {products.length === 0 && (
+            <div className='empty'>No items available.</div>
+          )}
         </div>
       </div>
     </>

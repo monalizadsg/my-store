@@ -16,6 +16,37 @@
     font-weight: 600;
   }
 
+  .navbar-search {
+    position: relative;
+    border-radius: 5px;
+    background-color: #a7b2f0;
+    margin-right: 30px;
+    margin-left: 0;
+
+    &:hover {
+      background-color: #99a7f7;
+    }
+
+    .search-icon {
+      height: 100%;
+      position: absolute;
+      pointer-events: none;
+      display: flex;
+      padding: 5px;
+    }
+
+    .search-input {
+      .MuiInputBase-root {
+        color: inherit;
+      }
+      .MuiInputBase-input {
+        padding: 8px;
+        padding-left: 30px;
+        width: 100%;
+      }
+    }
+  }
+
   .navbar-list {
     display: flex;
     align-items: center;
