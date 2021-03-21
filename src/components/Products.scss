@@ -54,3 +54,36 @@
     margin-top: 50px;
   }
 }
+
+@media only screen and (max-width: 600px) {
+  .products-wrapper {
+    .card-container {
+      width: 100%;
+
+      .card {
+        width: 145px;
+        min-width: 135px;
+        margin: 10px;
+
+        img {
+          height: 25px;
+        }
+
+        .content {
+          .add-to-cart {
+            padding-bottom: 18px;
+
+            .add-to-cart-btn {
+              padding: 5px;
+            }
+          }
+        }
+
+        .product-details {
+          flex-direction: column;
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+}
