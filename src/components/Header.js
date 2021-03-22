@@ -1,26 +1,18 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import {
-  Container,
-  AppBar,
-  List,
-  Typography,
-  ListItem,
-  ListItemText,
-  Button,
-  InputBase,
-} from "@material-ui/core";
+import { Container, AppBar, List, Typography, Button } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import SearchIcon from "@material-ui/icons/Search";
+
+import PersonIcon from "@material-ui/icons/Person";
 import { useHistory } from "react-router-dom";
 import { auth } from "../config/Config";
 import { UserContext } from "./../global/UserContext";
 import { CartContext } from "./../global/CartContext";
 import "./Header.scss";
+import SearchBar from "./SearchBar";
 
 const navLinks = [
-  { title: "sign up", path: "/signup" },
-  { title: "login", path: "/login" },
+  { title: "login", path: "/login", icon: <PersonIcon /> },
   { title: "cart", path: "/my-cart", icon: <ShoppingCartIcon /> },
 ];
 
@@ -44,15 +36,8 @@ const Header = (props) => {
               TeeShop
             </Link>
           </Typography>
-          <div className='navbar-search'>
-            <div className='search-icon'>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder='Search…'
-              className='search-input'
-              onChange={(event) => props.onChangeSearchInput(event)}
-            />
+          <div className='searh-bar'>
+            <SearchBar onChange={(event) => props.onChangeSearchInput(event)} />
           </div>
           {!user && (
             <List
@@ -62,15 +47,14 @@ const Header = (props) => {
             >
               {navLinks.map(({ title, path, icon }) => (
                 <Link to={path} key={title} className='nav-link'>
-                  <ListItem button>
-                    <ListItemText primary={title} />
-                    {icon && (
-                      <div className='cart'>
-                        <span>{icon}</span>
-                        <div className='cart-qty'>{totalQty}</div>
-                      </div>
-                    )}
-                  </ListItem>
+                  {title === "cart" ? (
+                    <div className='cart'>
+                      <span>{icon}</span>
+                      <div className='cart-qty'>{totalQty}</div>
+                    </div>
+                  ) : (
+                    <span>{icon}</span>
+                  )}
                 </Link>
               ))}
             </List>
