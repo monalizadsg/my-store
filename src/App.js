@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { CartContextProvider } from "./global/CartContext";
-import { UserContextProvider } from "./global/UserContext";
 import Products from "./components/Products";
 import AddProduct from "./components/AddProduct";
 import Login from "./components/Login";
@@ -15,19 +14,17 @@ function App() {
   return (
     <React.Fragment>
       <CartContextProvider>
-        <UserContextProvider>
-          <ToastContextProvider>
-            <Switch>
-              <Route exact component={Products} path='/' />
-              <Route component={AddProduct} path='/add-product' />
-              <Route component={Cart} path='/my-cart' />
-              <Route component={Cashout} path='/cashout' />
-              <Route component={Login} path='/login' />
-              <Route component={Signup} path='/signup' />
-            </Switch>
-            <Toast />
-          </ToastContextProvider>
-        </UserContextProvider>
+        <ToastContextProvider>
+          <Switch>
+            <Route component={AddProduct} path='/add-product' />
+            <Route component={Cart} path='/my-cart' />
+            <Route component={Cashout} path='/cashout' />
+            <Route component={Login} path='/login' />
+            <Route component={Signup} path='/signup' />
+            <Route exact component={Products} path='/' />
+          </Switch>
+          <Toast />
+        </ToastContextProvider>
       </CartContextProvider>
     </React.Fragment>
   );
