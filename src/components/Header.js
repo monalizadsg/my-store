@@ -1,12 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { db, auth } from "../config/Config";
 import { Container, AppBar, List, Typography, Button } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-
 import PersonIcon from "@material-ui/icons/Person";
 import { useHistory } from "react-router-dom";
-import { auth } from "../config/Config";
-import { UserContext } from "./../global/UserContext";
 import { CartContext } from "./../global/CartContext";
 import "./Header.scss";
 import SearchBar from "./SearchBar";
@@ -18,8 +16,26 @@ const navLinks = [
 
 const Header = (props) => {
   const history = useHistory();
-  const { user } = useContext(UserContext);
+  const [user, setUser] = useState(null);
   const { totalQty } = useContext(CartContext);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        db.collection("SignedUpUsersData")
+          .doc(user.uid)
+          .get()
+          .then((snapshot) => {
+            if (snapshot.exists) {
+              const userName = snapshot.data().FirstName;
+              setUser(userName);
+            }
+          });
+      } else {
+        setUser(null);
+      }
+    });
+  }, []);
 
   const handleLogout = () => {
     auth.signOut().then(() => {
