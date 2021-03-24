@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import TextInput from "../components/TextInput";
 import { auth, db } from "../config/Config";
 import { makeStyles } from "@material-ui/core/styles";
+import TextInputWithIcon from "./TextInputWithIcon";
 
 const useStyles = makeStyles((theme) => ({
   pageDisplay: {
@@ -40,6 +41,9 @@ const Signup = (props) => {
   };
   const [user, setUser] = useState(initialUserInput);
   const [error, setError] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = ({ target: input }) => {
     const { name, value } = input;
@@ -48,10 +52,12 @@ const Signup = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const { firstName, lastName, email, password } = user;
 
     const isValid = validateForm();
     if (!isValid) {
+      setIsLoading(false);
       return;
     }
 
@@ -77,11 +83,31 @@ const Signup = (props) => {
               password: "",
             });
             setError({});
+            setIsLoading(false);
             props.history.push("/login");
           })
-          .catch((err) => console.log(err.message));
+          .catch((err) => {
+            console.log(err.message);
+          });
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        console.log(err.message);
+
+        if (err.message.includes("Password")) {
+          setError({
+            ...error,
+            password: err.message,
+            confirmPassword: err.message,
+          });
+          setIsLoading(false);
+        } else if (err.message.includes("email")) {
+          setError({
+            ...error,
+            email: err.message,
+          });
+          setIsLoading(false);
+        }
+      });
   };
 
   const validateForm = () => {
@@ -115,92 +141,102 @@ const Signup = (props) => {
     return isValid;
   };
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const handleClickShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
-    <div className={classes.pageDisplay}>
-      <Container className={classes.container} maxWidth='xs'>
-        <Grid item xs={12}>
-          <Typography variant='h5'>Create your account</Typography>
-          <Typography variant='body1'>
-            Already have an account? Login
-            <Link to='/login' className={classes.linkTextDisplay}>
-              {" "}
-              Here
-            </Link>
-          </Typography>
-        </Grid>
-        <form onSubmit={handleSubmit} className={classes.formDisplay}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextInput
-                    fullWidth
-                    name='firstName'
-                    label='First Name'
-                    value={user.firstName}
-                    onChange={handleInputChange}
-                    error={error.firstName}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextInput
-                    fullWidth
-                    name='lastName'
-                    label='Last Name'
-                    value={user.lastName}
-                    onChange={handleInputChange}
-                    error={error.lastName}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextInput
-                    fullWidth
-                    type='email'
-                    name='email'
-                    label='Email'
-                    value={user.email}
-                    onChange={handleInputChange}
-                    error={error.email}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextInput
-                    fullWidth
-                    type='password'
-                    name='password'
-                    label='Password'
-                    value={user.password}
-                    onChange={handleInputChange}
-                    error={error.password}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextInput
-                    fullWidth
-                    type='password'
-                    name='confirmPassword'
-                    label='Confirm Password'
-                    value={user.confirmPassword}
-                    onChange={handleInputChange}
-                    error={error.confirmPassword}
-                  />
+    <>
+      <div className={classes.pageDisplay}>
+        <Container className={classes.container} maxWidth='xs'>
+          <Grid item xs={12}>
+            <Typography variant='h5'>Create your account</Typography>
+            <Typography variant='body1'>
+              Already have an account? Login
+              <Link to='/login' className={classes.linkTextDisplay}>
+                {" "}
+                Here
+              </Link>
+            </Typography>
+          </Grid>
+          <form onSubmit={handleSubmit} className={classes.formDisplay}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextInput
+                      fullWidth
+                      name='firstName'
+                      label='First Name'
+                      value={user.firstName}
+                      onChange={handleInputChange}
+                      error={error.firstName}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextInput
+                      fullWidth
+                      name='lastName'
+                      label='Last Name'
+                      value={user.lastName}
+                      onChange={handleInputChange}
+                      error={error.lastName}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextInput
+                      fullWidth
+                      type='email'
+                      name='email'
+                      label='Email'
+                      value={user.email}
+                      onChange={handleInputChange}
+                      error={error.email}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextInputWithIcon
+                      label='Password'
+                      name='password'
+                      showPassword={showPassword}
+                      value={user.password}
+                      onChange={handleInputChange}
+                      onClick={handleClickShowPassword}
+                      error={error.password}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextInputWithIcon
+                      label='Confirm Password'
+                      name='confirmPassword'
+                      showPassword={showConfirmPassword}
+                      value={user.confirmPassword}
+                      onChange={handleInputChange}
+                      onClick={handleClickShowConfirmPassword}
+                      error={error.confirmPassword}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
+              <Grid item xs={12}>
+                <Button
+                  color='primary'
+                  fullWidth
+                  type='submit'
+                  variant='contained'
+                  disabled={isLoading}
+                >
+                  Register
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Button
-                color='primary'
-                fullWidth
-                type='submit'
-                variant='contained'
-              >
-                Register
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Container>
-    </div>
+          </form>
+        </Container>
+      </div>
+    </>
   );
 };
 

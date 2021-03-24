@@ -5,8 +5,12 @@ const Loading = (props) => {
   return (
     <div
       style={{
-        zIndex: "99",
+        zIndex: "1000",
+        height: "100%",
         width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       {props.isLoading && <CircularProgress color='primary' />}

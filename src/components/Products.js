@@ -122,7 +122,7 @@ const Products = () => {
               </div>
             </div>
           ))}
-          {products.length === 0 && (
+          {products.length === 0 && !isLoading && (
             <div className='empty'>No items available.</div>
           )}
         </div>

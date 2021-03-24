@@ -5,6 +5,7 @@ import TextInput from "../components/TextInput";
 import { auth } from "../config/Config";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import TextInputWithIcon from "./TextInputWithIcon";
 
 const useStyles = makeStyles((theme) => ({
   pageDisplay: {
@@ -32,15 +33,19 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   const classes = useStyles();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     const isValid = validateForm();
     if (!isValid) {
       setError("Incorrect email or password");
+      setIsLoading(false);
       return;
     }
 
@@ -51,8 +56,18 @@ const Login = () => {
         setPassword("");
         setError("");
         history.push("/");
+        setIsLoading(false);
       })
-      .catch((err) => setError(err.message));
+      .catch((err) => {
+        setError(err.message);
+        setIsLoading(false);
+      });
+  };
+
+  const handleOnkeyDown = (event) => {
+    if (event.keyCode === 13) {
+      handleSubmit(event);
+    }
   };
 
   const handleEmailChange = ({ target }) => {
@@ -72,10 +87,14 @@ const Login = () => {
     return true;
   };
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className={`login-wrapper ${classes.pageDisplay}`}>
       <Container className={classes.container} maxWidth='xs'>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} onKeyDown={handleOnkeyDown}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Grid container spacing={2}>
@@ -91,13 +110,13 @@ const Login = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextInput
-                    fullWidth
-                    type='password'
+                  <TextInputWithIcon
                     name='password'
                     label='Password'
+                    showPassword={showPassword}
                     value={password}
                     onChange={handlePasswordChange}
+                    onClick={handleClickShowPassword}
                   />
                 </Grid>
               </Grid>
@@ -108,6 +127,7 @@ const Login = () => {
                 fullWidth
                 type='submit'
                 variant='contained'
+                disabled={isLoading}
               >
                 Login
               </Button>
