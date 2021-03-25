@@ -6,7 +6,7 @@ a simple e-commerce app built with React and firebase. Built this project to lea
 
 ### Tech stack: 
 - Create-React-App for bootstrapping the project
-- Material UI as component framework
+- Material UI as component layout
 - React-router-dom for routing
 - SASS for styling 
 - Firebase for user authentication and data storage.
