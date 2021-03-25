@@ -55,7 +55,6 @@ const Products = () => {
   }, [searchValue]);
 
   const handleAddToCart = (item) => {
-    console.log(shoppingCart);
     const isItemAdded = shoppingCart.find((product) => product.id === item.id);
 
     if (isItemAdded) {

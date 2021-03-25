@@ -41,7 +41,6 @@ const AddProduct = () => {
 
   const handleImageInput = ({ target: input }) => {
     let selectedFile = input.files[0];
-    console.log(selectedFile);
     setProduct({ ...product, image: selectedFile });
   };
 
