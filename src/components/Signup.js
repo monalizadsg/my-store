@@ -5,6 +5,7 @@ import TextInput from "../components/TextInput";
 import { auth, db } from "../config/Config";
 import { makeStyles } from "@material-ui/core/styles";
 import TextInputWithIcon from "./TextInputWithIcon";
+import Header from "../components/Header";
 
 const useStyles = makeStyles((theme) => ({
   pageDisplay: {
@@ -151,6 +152,7 @@ const Signup = (props) => {
   return (
     <>
       <div className={classes.pageDisplay}>
+        <Header />
         <Container className={classes.container} maxWidth='xs'>
           <Grid item xs={12}>
             <Typography variant='h5'>Create your account</Typography>

@@ -6,6 +6,7 @@ import { auth } from "../config/Config";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import TextInputWithIcon from "./TextInputWithIcon";
+import Header from "../components/Header";
 
 const useStyles = makeStyles((theme) => ({
   pageDisplay: {
@@ -93,6 +94,7 @@ const Login = () => {
 
   return (
     <div className={`login-wrapper ${classes.pageDisplay}`}>
+      <Header />
       <Container className={classes.container} maxWidth='xs'>
         <form onSubmit={handleSubmit} onKeyDown={handleOnkeyDown}>
           <Grid container spacing={3}>

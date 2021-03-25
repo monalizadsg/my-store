@@ -52,9 +52,14 @@ const Header = (props) => {
               TeeShop
             </Link>
           </Typography>
-          <div className='searh-bar'>
-            <SearchBar onChange={(event) => props.onChangeSearchInput(event)} />
-          </div>
+          {props.renderSearch && (
+            <div className='searh-bar'>
+              <SearchBar
+                onChange={(event) => props.onChangeSearchInput(event)}
+              />
+            </div>
+          )}
+
           {!user && (
             <List
               component='nav'

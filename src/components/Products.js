@@ -81,7 +81,7 @@ const Products = () => {
 
   return (
     <>
-      <Header onChangeSearchInput={onChangeSearchInput} />
+      <Header onChangeSearchInput={onChangeSearchInput} renderSearch={true} />
       <div className='products-wrapper'>
         {products.length !== 0 && (
           <Typography variant='h5'>Products</Typography>
